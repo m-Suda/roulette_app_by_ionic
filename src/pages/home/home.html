@@ -1,14 +1,68 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>
+            Roulette
+        </ion-title>
+    </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+    <ion-card class="roulette">
+        <ion-card-content>
+            <ion-item-divider>
+                {{selectedItem}}
+            </ion-item-divider>
+            <ng-container *ngIf="isStop; else stopButton">
+                <button ion-button color="secondary" [disabled]="!ready" (click)="start()">
+                    <ion-icon name="play"></ion-icon>
+                </button>
+            </ng-container>
+            <ng-template #stopButton>
+                <button ion-button color="danger" (click)="stop()">
+                    <ion-icon name="square"></ion-icon>
+                </button>
+            </ng-template>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="items">
+        <ion-card-header>
+            <ion-item>
+                List
+                <button ion-button color="danger" icon-only item-end clear [disabled]="!isStop"
+                        (click)="clearItems()">
+                    <ion-icon name="trash"></ion-icon>
+                </button>
+            </ion-item>
+        </ion-card-header>
+        <ion-card-content>
+            <ng-container *ngIf="items?.length > 0; else noItems">
+                <ng-container *ngFor="let item of items; let i = index">
+                    <ion-item>
+                        <ion-icon name="logo-reddit">
+                        </ion-icon>
+                        {{item}}
+                        <button ion-button color="danger" icon-only item-end clear [disabled]="!isStop"
+                                (click)="removeItems(i)">
+                            <ion-icon name="remove-circle-outline"></ion-icon>
+                        </button>
+                    </ion-item>
+                </ng-container>
+            </ng-container>
+            <ng-template #noItems>
+                No Items
+            </ng-template>
+        </ion-card-content>
+    </ion-card>
+    <ion-card class="add-item">
+        <ion-card-content>
+            <ion-item>
+                <ion-label floating>Item Name</ion-label>
+                <ion-input type="text" [formControl]="itemName"></ion-input>
+            </ion-item>
+            <div class="add-button">
+                <button ion-button color="primary" [disabled]="itemName.invalid" (click)="addItems()">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                </button>
+            </div>
+        </ion-card-content>
+    </ion-card>
 </ion-content>
